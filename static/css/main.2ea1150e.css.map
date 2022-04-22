@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/main.2ea1150e.css","mappings":"AAAA,4BACE,yBACF,CACA,KACE,wBACF,CACA,eACE,wBACF","sources":["App.css"],"sourcesContent":[".capitalize-me::first-letter {\n  text-transform: capitalize;\n}\nbody {\n  background-color: #faaab5;\n}\n.navBarPokemon{\n  background-color: #eda1ab;\n}"],"names":[],"sourceRoot":""}

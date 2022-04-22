@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/poke-me/static/css/main.2ea1150e.css",
+    "main.js": "/poke-me/static/js/main.45af2cb8.js",
+    "static/media/pokeball.png": "/poke-me/static/media/pokeball.a5002c7f0459fd4ee803.png",
+    "index.html": "/poke-me/index.html",
+    "main.2ea1150e.css.map": "/poke-me/static/css/main.2ea1150e.css.map",
+    "main.45af2cb8.js.map": "/poke-me/static/js/main.45af2cb8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2ea1150e.css",
+    "static/js/main.45af2cb8.js"
+  ]
+}
