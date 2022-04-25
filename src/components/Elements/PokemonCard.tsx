@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import { styled } from '@mui/material';
 import Paper from '@mui/material/Paper';
 // @ts-ignore
-import {PokemonDetails} from "../interface";
+import {PokemonDetails, Abilities, Moves, Types, Stats} from "../interface";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -21,38 +21,25 @@ interface PokemonCardProps {
     id: number;
     name: string;
     image: string;
-    abilities: {
-        name: string;
-        ability: string;
-    }[] | undefined;
-    types: {
-        name: string;
-        type: string;
-    }[] | undefined;
-    stats: {
-        base_stat: number;
-        name: string;
-        stat: string;
-    }[] | undefined;
-    moves: {
-        name: string;
-        move: string;
-    }[] | undefined;
+    abilities: Abilities[] | undefined;
+    types: Types[] | undefined;
+    stats: Stats[] | undefined;
+    moves: Moves[] | undefined;
 }
 export const PokemonCard:FunctionComponent<PokemonCardProps> = ({id, name, image, abilities, moves, stats, types, pokemonDetails, setPokemonDetails}: PokemonCardProps) => {
     const [isSelected, setSelected] = useState(false);
     useEffect(() => {
         setSelected(id === pokemonDetails?.id);
-    },[pokemonDetails])
+    },[id, pokemonDetails])
     const handleClose = () => {
         setPokemonDetails({
             id:0,
             isOpened: false,
         })
     }
-    return (
-        <>
-            {isSelected ? (
+    const renderModal = () => {
+        if (isSelected) {
+            return (
                 <Modal
                     open={isSelected}
                     onClose={handleClose}
@@ -72,10 +59,16 @@ export const PokemonCard:FunctionComponent<PokemonCardProps> = ({id, name, image
                         p: 4,
 
                     }}>
-                    <PokemonDetail image={image} name={name} abilities={abilities} moves={moves} types={types} stats={stats} />
+                        <PokemonDetail image={image} name={name} abilities={abilities} moves={moves} types={types} stats={stats} />
                     </Box>
-                    </Modal>
-            ): (<></>) }
+                </Modal>
+            )
+        }
+        return null;
+    }
+    return (
+        <>
+            { renderModal() }
             <Item>
                 <Box
                     component="img"

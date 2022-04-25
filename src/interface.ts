@@ -5,30 +5,23 @@ export interface Pokemon {
         front_default: string;
     }
 }
-export interface Evolution {
-    chain: {
-        evolves_to:string;
-    }[];
+export interface Abilities {
+    ability: string;
+    name:string;
 }
-export interface OnePokemonDetails extends Pokemon {
-    abilities?: {
-        ability: string;
-        name:string;
-    }[];
-    types?: {
-        type: string;
-        name:string;
-    }[];
-    stats?: {
-        base_stat: number;
-        stat: string;
-        name:string;
-    }[];
-    moves?: {
-        move: string;
-        name:string;
-    }[];
+export interface Stats {
+    stat: string;
+    name:string;
 }
+export interface Types {
+    type: string;
+    name:string;
+}
+export interface Moves {
+    move: string;
+    name:string;
+}
+export interface OnePokemonDetails extends Pokemon, Abilities, Types, Moves {}
 
 export interface PokemonDetails {
     id: number;

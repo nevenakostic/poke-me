@@ -22,10 +22,9 @@ export const PokemonList:FunctionComponent<PokemonListProps> = ({pokemons, pokem
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                {pokemons.map((onePokemon,index
-                ) => {
+                {pokemons.map((onePokemon) => {
                     return (
-                        <Grid onClick={() => viewDetails(onePokemon.id)} item xs={2} sm={4} md={4} key={index} >
+                        <Grid onClick={() => viewDetails(onePokemon.id)} item xs={2} sm={4} md={4} key={onePokemon.id} >
                             <PokemonCard
                             pokemonDetails={pokemonDetails}
                             setPokemonDetails={setPokemonDetails}

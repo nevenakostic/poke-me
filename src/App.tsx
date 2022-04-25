@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useEffect, useState} from "react";
+import React, {FunctionComponent, useState} from "react";
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { Header } from "./components/Header";
@@ -6,7 +6,7 @@ import { PokemonList } from "./components/Elements/PokemonList";
 import './App.css';
 import axios from "axios";
 import {Pokemon} from "./interface";
-import {PokemonDetails, Evolution} from "./interface";
+import {PokemonDetails} from "./interface";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -33,55 +33,51 @@ const PokemonButton = styled(Button) ({
 });
 
 export const App: FunctionComponent = () => {
+    const baseURL = "http://pokeapi.co/api/v2/";
     const [findPokemon, setFindPokemon] = useState<boolean>(true);
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
     const [nextUrl, setNextUrl] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
-    const [evolution, setEvolution] = useState<Evolution[]>([]);
     const [pokemonDetails, setPokemonDetails] = useState<PokemonDetails>({
         id: 0,
         isOpened: false,
     })
-
-    // I was getting mixed results so I found below another way with function loadPokemons...
-
-    // useEffect(()=>{
-    //     const getPokemon = async () => {
-    //         const res = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=20&offset=20")
-    //         res.data.results.forEach(async(pokemon:Pokemons, index:number) => {
-    //             const onePoke = await axios.get(`https://pokeapi.co/api/v2//pokemon/${pokemon.name}`)
-    //             setPokemons((p) => [...p, onePoke.data])
-    //
-    //             const evolution = await axios.get(`https://pokeapi.co/api/v2/evolution-chain/${index}`)
-    //             setEvolution((p) => [...p, evolution.data])
-    //             setLoading(false);
-    //         })
-    //         setNextUrl(res.data.next);
-    //     }
-    //     getPokemon();
-    // },[]);
     const nextPage = async () => {
         setLoading(true);
         let res = await axios.get(nextUrl);
         setNextUrl(res.data.next);
         res.data.results.forEach(async (pokemon:Pokemon) => {
-            const onePoke = await axios.get(`https://pokeapi.co/api/v2//pokemon/${pokemon.name}`);
+            const onePoke = await axios.get(`${baseURL}pokemon/${pokemon.name}`);
             setPokemons((p) => [...p,onePoke.data]);
             setLoading(false);
         });
     }
     const loadPokemons = async () => {
-         const res = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=20&offset=0")
-         res.data.results.forEach(async(pokemon:Pokemons, index:number) => {
-             const onePoke = await axios.get(`https://pokeapi.co/api/v2//pokemon/${pokemon.name}`)
+         const res = await axios.get(`${baseURL}pokemon?limit=20&offset=0`)
+         res.data.results.forEach(async(pokemon:Pokemons) => {
+             const onePoke = await axios.get(`${baseURL}pokemon/${pokemon.name}`)
              setPokemons((p) => [...p, onePoke.data])
-
-             const evolution = await axios.get(`https://pokeapi.co/api/v2/evolution-chain/${index + 1}`)
-             setEvolution((p) => [...p, evolution.data])
-             setLoading(false);
          })
          setNextUrl(res.data.next);
          setFindPokemon(false);
+    }
+    const renderPokemon = () => {
+        return (
+            <>
+                <PokemonList pokemons = {pokemons} pokemonDetails={pokemonDetails} setPokemonDetails={setPokemonDetails} />
+                <br /> <br />
+                <Stack justifyContent='center' direction="row" spacing={2}>
+                    <PokemonButton onClick={nextPage} variant="contained">{loading ? ". . ." : "LOAD MORE RESULTS"}</PokemonButton>
+                </Stack>
+            </>
+        )
+    }
+    const renderStartButton = () => {
+        return (
+            <Stack sx={{ margin:'200px'}} justifyContent='center' direction="row">
+                <PokemonButton onClick={loadPokemons} variant="contained">START</PokemonButton>
+            </Stack>
+        )
     }
     return (
         <>
@@ -99,20 +95,7 @@ export const App: FunctionComponent = () => {
                     sx={{ padding:  '2rem' }}
                     maxWidth={false}
                 >
-                    {findPokemon ? (
-                        <Stack sx={{
-                            margin:'200px'
-                        }} justifyContent='center' direction="row">
-                            <PokemonButton onClick={loadPokemons} variant="contained">START</PokemonButton>
-                        </Stack>    ) : (
-                            <>
-                            <PokemonList pokemons = {pokemons} pokemonDetails={pokemonDetails} setPokemonDetails={setPokemonDetails} />
-                        <br /> <br />
-                        <Stack justifyContent='center' direction="row" spacing={2}>
-                        <PokemonButton onClick={nextPage} variant="contained">{loading ? ". . ." : "LOAD MORE RESULTS"}</PokemonButton>
-                        </Stack>
-                            </>)}
-
+                    {findPokemon ? renderStartButton() :  renderPokemon() }
                 </Container>
             </Box>
         </>

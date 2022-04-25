@@ -2,6 +2,8 @@ import React, {FunctionComponent} from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { styled} from '@mui/material';
+// @ts-ignore
+import {Abilities, Moves, Types, Stats} from "../interface";
 
 const Details = styled('span')(({ theme }) => ({
     textTransform: 'capitalize',
@@ -10,86 +12,73 @@ const Details = styled('span')(({ theme }) => ({
 interface PokemonDetailProps {
     name: string;
     image: string;
-    abilities: {
-        name: string;
-        ability: string;
-    }[] | undefined;
-    types: {
-        name: string;
-        type: string;
-    }[] | undefined;
-    stats: {
-        base_stat: number;
-        name: string;
-        stat: string;
-    }[] | undefined;
-    moves: {
-        name: string;
-        move: string;
-    }[] | undefined;
+    abilities: Abilities[] | undefined;
+    types: Types[] | undefined;
+    stats: Stats[] | undefined;
+    moves: Moves[] | undefined;
 }
 export const PokemonDetail:FunctionComponent<PokemonDetailProps> = ({name, image, abilities, moves, stats, types}: PokemonDetailProps) => {
     return (
         <>
-                <Box sx={{
-                    margin: 'auto',
-                }}
-                    component="img"
-                    alt="Pokemon"
-                    src={image}
-                />
-                <Typography className="capitalize-me" id="modal-modal-title" variant="h5" component="h2">
-                    {name}
-                </Typography>
-                <hr />
-                <Typography id="modal-modal-title" variant="h6">
-                    Moves:
-                </Typography>
-                <Details>
-                    {/* eslint-disable-next-line array-callback-return */}
-                    {moves?.map((m:any, i) => {
+            <Box sx={{
+                margin: 'auto',
+            }}
+                component="img"
+                alt="Pokemon"
+                src={image}
+            />
+            <Typography className="capitalize-me" id="modal-modal-title" variant="h5" component="h2">
+                {name}
+            </Typography>
+            <hr />
+            <Typography id="modal-modal-title" variant="h6">
+                Moves:
+            </Typography>
+            <Details>
+                {moves?.map((m:any, i) => {
+                if (i === 0 || i === 1) {
+                    return (
+                        <span key={m.move.name}> {m.move.name}; </span>
+                    )}
+                return null;
+            })}
+            </Details>
+            <Typography id="modal-modal-title" variant="h6">
+                Types:
+            </Typography>
+            <Details>
+                {types?.map((t:any, i) => {
                     if (i === 0 || i === 1) {
                         return (
-                            <span> {m.move.name}; </span>
+                            <span key={t.type.name}> {t.type.name}; </span>
                         )}
+                    return null;
                 })}
-                </Details>
-                <Typography id="modal-modal-title" variant="h6">
-                    Types:
-                </Typography>
-                <Details>
-                    {/* eslint-disable-next-line array-callback-return */}
-                    {types?.map((t:any, i) => {
-                        if (i === 0 || i === 1) {
-                            return (
-                                <span> {t.type.name}; </span>
-                            )}
-                    })}
-                </Details>
-                <Typography id="modal-modal-title" variant="h6">
-                    Abilities:
-                </Typography>
-                <Details>
-                    {/* eslint-disable-next-line array-callback-return */}
-                    {abilities?.map((a:any, i) => {
-                        if (i === 0 || i === 1) {
-                            return (
-                                <span> {a.ability.name}; </span>
-                            )}
-                    })}
-                </Details>
-                <Typography id="modal-modal-title" variant="h6">
-                    Stats:
-                </Typography>
-                <Details>
-                    {/* eslint-disable-next-line array-callback-return */}
-                    {stats?.map((s:any, i) => {
-                        if (i === 0 || i === 1) {
-                            return (
-                                <span> {s.stat.name} : {s.base_stat};  </span>
-                            )}
-                    })}
-                </Details>
+            </Details>
+            <Typography id="modal-modal-title" variant="h6">
+                Abilities:
+            </Typography>
+            <Details>
+                {abilities?.map((a:any, i) => {
+                    if (i === 0 || i === 1) {
+                        return (
+                            <span key={a.ability.name}> {a.ability.name}; </span>
+                        )}
+                    return null;
+                })}
+            </Details>
+            <Typography id="modal-modal-title" variant="h6">
+                Stats:
+            </Typography>
+            <Details>
+                {stats?.map((s:any, i) => {
+                    if (i === 0 || i === 1) {
+                        return (
+                            <span key={s.stat.name}> {s.stat.name} : {s.base_stat};  </span>
+                        )}
+                    return null;
+                })}
+            </Details>
         </>
     );
 }
