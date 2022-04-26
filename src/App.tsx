@@ -33,7 +33,7 @@ const PokemonButton = styled(Button) ({
 });
 
 export const App: FunctionComponent = () => {
-    const baseURL = "http://pokeapi.co/api/v2/";
+    const baseURL = "https://pokeapi.co/api/v2/";
     const [findPokemon, setFindPokemon] = useState<boolean>(true);
     const [pokemons, setPokemons] = useState<Pokemon[]>([]);
     const [nextUrl, setNextUrl] = useState<string>("");
@@ -75,7 +75,7 @@ export const App: FunctionComponent = () => {
     const renderStartButton = () => {
         return (
             <Stack sx={{ margin:'200px'}} justifyContent='center' direction="row">
-                <PokemonButton onClick={loadPokemons} variant="contained">START</PokemonButton>
+                <PokemonButton role="startButton" onClick={loadPokemons} variant="contained">START</PokemonButton>
             </Stack>
         )
     }
@@ -90,6 +90,7 @@ export const App: FunctionComponent = () => {
             >
                 <Header />
                 <Container
+                    role="container"
                     component="main"
                     disableGutters
                     sx={{ padding:  '2rem' }}
